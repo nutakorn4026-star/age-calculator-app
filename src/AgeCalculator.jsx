@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 // Premium design tokens and styles using pure CSS variables
 const styles = `
@@ -288,7 +288,15 @@ const styles = `
 `;
 
 // Dropdown Helper Component with Framer Motion animations
-const CustomDropdown = ({ label, value, options, onChange, placeholder, activeDropdown, setActiveDropdown }) => {
+const CustomDropdown = ({
+  label,
+  value,
+  options,
+  onChange,
+  placeholder,
+  activeDropdown,
+  setActiveDropdown,
+}) => {
   const isOpen = activeDropdown === label;
   const dropdownRef = useRef(null);
 
@@ -298,8 +306,8 @@ const CustomDropdown = ({ label, value, options, onChange, placeholder, activeDr
         if (isOpen) setActiveDropdown(null);
       }
     };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isOpen, label, setActiveDropdown]);
 
   const toggleDropdown = () => {
@@ -313,17 +321,30 @@ const CustomDropdown = ({ label, value, options, onChange, placeholder, activeDr
   return (
     <div className="custom-dropdown-container" ref={dropdownRef}>
       <label className="dropdown-label">{label}</label>
-      <div 
-        className={`dropdown-trigger ${isOpen ? 'active' : ''}`} 
+      <div
+        className={`dropdown-trigger ${isOpen ? "active" : ""}`}
         onClick={toggleDropdown}
       >
-        <span>{value ? options.find(o => o.value === value)?.label || value : placeholder}</span>
+        <span>
+          {value
+            ? options.find((o) => o.value === value)?.label || value
+            : placeholder}
+        </span>
         <motion.div
           animate={{ rotate: isOpen ? 180 : 0 }}
           transition={{ duration: 0.2 }}
           className="chevron-icon"
         >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
             <polyline points="6 9 12 15 18 9"></polyline>
           </svg>
         </motion.div>
@@ -341,7 +362,7 @@ const CustomDropdown = ({ label, value, options, onChange, placeholder, activeDr
             {options.map((option) => (
               <li
                 key={option.value}
-                className={`dropdown-item ${value === option.value ? 'selected' : ''}`}
+                className={`dropdown-item ${value === option.value ? "selected" : ""}`}
                 onClick={() => {
                   onChange(option.value);
                   setActiveDropdown(null);
@@ -358,17 +379,17 @@ const CustomDropdown = ({ label, value, options, onChange, placeholder, activeDr
 };
 
 export default function AgeCalculator() {
-  const [theme, setTheme] = useState('dark');
-  const [day, setDay] = useState('');
-  const [month, setMonth] = useState('');
-  const [year, setYear] = useState('');
+  const [theme, setTheme] = useState("dark");
+  const [day, setDay] = useState("");
+  const [month, setMonth] = useState("");
+  const [year, setYear] = useState("");
   const [age, setAge] = useState(null);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [activeDropdown, setActiveDropdown] = useState(null);
 
   // Inject styles to head on mount
   useEffect(() => {
-    const styleElement = document.createElement('style');
+    const styleElement = document.createElement("style");
     styleElement.innerHTML = styles;
     document.head.appendChild(styleElement);
     return () => {
@@ -382,7 +403,7 @@ export default function AgeCalculator() {
       calculateAge();
     } else {
       setAge(null);
-      setError('');
+      setError("");
     }
   }, [day, month, year]);
 
@@ -397,7 +418,7 @@ export default function AgeCalculator() {
   }, [month, year, day]);
 
   const toggleTheme = () => {
-    setTheme(prev => prev === 'dark' ? 'light' : 'dark');
+    setTheme((prev) => (prev === "dark" ? "light" : "dark"));
   };
 
   const getDaysInMonth = (m, y) => {
@@ -418,12 +439,12 @@ export default function AgeCalculator() {
     birthDate.setHours(0, 0, 0, 0);
 
     if (birthDate > today) {
-      setError('Date cannot be in the future');
+      setError("Date cannot be in the future");
       setAge(null);
       return;
     }
 
-    setError('');
+    setError("");
 
     let years = today.getFullYear() - birthDate.getFullYear();
     let months = today.getMonth() - birthDate.getMonth();
@@ -445,30 +466,30 @@ export default function AgeCalculator() {
 
   // Generate Dropdown Options
   const monthsList = [
-    { value: 1, label: 'January' },
-    { value: 2, label: 'February' },
-    { value: 3, label: 'March' },
-    { value: 4, label: 'April' },
-    { value: 5, label: 'May' },
-    { value: 6, label: 'June' },
-    { value: 7, label: 'July' },
-    { value: 8, label: 'August' },
-    { value: 9, label: 'September' },
-    { value: 10, label: 'October' },
-    { value: 11, label: 'November' },
-    { value: 12, label: 'December' }
+    { value: 1, label: "January" },
+    { value: 2, label: "February" },
+    { value: 3, label: "March" },
+    { value: 4, label: "April" },
+    { value: 5, label: "May" },
+    { value: 6, label: "June" },
+    { value: 7, label: "July" },
+    { value: 8, label: "August" },
+    { value: 9, label: "September" },
+    { value: 10, label: "October" },
+    { value: 11, label: "November" },
+    { value: 12, label: "December" },
   ];
 
   const daysInMonth = getDaysInMonth(month || 1, year);
   const daysList = Array.from({ length: daysInMonth }, (_, idx) => ({
     value: idx + 1,
-    label: String(idx + 1).padStart(2, '0')
+    label: String(idx + 1).padStart(2, "0"),
   }));
 
   const currentYear = new Date().getFullYear();
   const yearsList = Array.from({ length: 150 }, (_, idx) => ({
     value: currentYear - idx,
-    label: String(currentYear - idx)
+    label: String(currentYear - idx),
   }));
 
   return (
@@ -477,11 +498,25 @@ export default function AgeCalculator() {
       <div className="grid-background-svg">
         <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
           <defs>
-            <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="var(--grid-color)" strokeWidth="1" />
+            <pattern
+              id="grid"
+              width="40"
+              height="40"
+              patternUnits="userSpaceOnUse"
+            >
+              <path
+                d="M 40 0 L 0 0 0 40"
+                fill="none"
+                stroke="var(--grid-color)"
+                strokeWidth="1"
+              />
             </pattern>
             <radialGradient id="glow" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="var(--text-color)" stopOpacity="0.04" />
+              <stop
+                offset="0%"
+                stopColor="var(--text-color)"
+                stopOpacity="0.04"
+              />
               <stop offset="100%" stopColor="var(--bg-color)" stopOpacity="0" />
             </radialGradient>
           </defs>
@@ -493,7 +528,16 @@ export default function AgeCalculator() {
       <div className="calculator-card">
         <div className="card-header">
           <div className="card-title">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
               <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
               <line x1="16" y1="2" x2="16" y2="6"></line>
               <line x1="8" y1="2" x2="8" y2="6"></line>
@@ -510,14 +554,21 @@ export default function AgeCalculator() {
             aria-label="Toggle Theme"
           >
             <AnimatePresence mode="wait" initial={false}>
-              {theme === 'dark' ? (
+              {theme === "dark" ? (
                 <motion.svg
                   key="sun"
                   initial={{ rotate: -90, opacity: 0 }}
                   animate={{ rotate: 0, opacity: 1 }}
                   exit={{ rotate: 90, opacity: 0 }}
                   transition={{ duration: 0.2 }}
-                  width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 >
                   <circle cx="12" cy="12" r="5"></circle>
                   <line x1="12" y1="1" x2="12" y2="3"></line>
@@ -536,7 +587,14 @@ export default function AgeCalculator() {
                   animate={{ rotate: 0, opacity: 1 }}
                   exit={{ rotate: -90, opacity: 0 }}
                   transition={{ duration: 0.2 }}
-                  width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 >
                   <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
                 </motion.svg>
@@ -577,7 +635,16 @@ export default function AgeCalculator() {
 
         {error && (
           <div className="error-message">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
               <circle cx="12" cy="12" r="10"></circle>
               <line x1="12" y1="8" x2="12" y2="12"></line>
               <line x1="12" y1="16" x2="12.01" y2="16"></line>
@@ -599,7 +666,11 @@ export default function AgeCalculator() {
                       initial={{ y: 15, opacity: 0 }}
                       animate={{ y: 0, opacity: 1 }}
                       exit={{ y: -15, opacity: 0 }}
-                      transition={{ type: "spring", stiffness: 150, damping: 14 }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 150,
+                        damping: 14,
+                      }}
                     >
                       {age.years}
                     </motion.span>
@@ -607,7 +678,7 @@ export default function AgeCalculator() {
                 </span>
                 <span className="result-label">years</span>
               </div>
-              
+
               <div className="result-row">
                 <span className="result-number-wrapper">
                   <AnimatePresence mode="popLayout">
@@ -616,7 +687,11 @@ export default function AgeCalculator() {
                       initial={{ y: 15, opacity: 0 }}
                       animate={{ y: 0, opacity: 1 }}
                       exit={{ y: -15, opacity: 0 }}
-                      transition={{ type: "spring", stiffness: 150, damping: 14 }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 150,
+                        damping: 14,
+                      }}
                     >
                       {age.months}
                     </motion.span>
@@ -633,7 +708,11 @@ export default function AgeCalculator() {
                       initial={{ y: 15, opacity: 0 }}
                       animate={{ y: 0, opacity: 1 }}
                       exit={{ y: -15, opacity: 0 }}
-                      transition={{ type: "spring", stiffness: 150, damping: 14 }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 150,
+                        damping: 14,
+                      }}
                     >
                       {age.days}
                     </motion.span>
@@ -644,7 +723,9 @@ export default function AgeCalculator() {
             </>
           ) : (
             <div className="empty-state">
-              Select your birth date details above to<br />calculate your exact age in real-time.
+              Select your birth date details above to
+              <br />
+              calculate your exact age
             </div>
           )}
         </div>
